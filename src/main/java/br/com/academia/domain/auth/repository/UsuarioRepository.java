@@ -1,4 +1,4 @@
-package br.com.academia.domain.auth;
+package br.com.academia.domain.auth.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +10,9 @@ public interface UsuarioRepository extends JpaRepository<EntUsuario, Long> {
 
 	EntUsuario findByNome(String usuario);
 
-	@Query("SELECT u FROM EntUsuario u JOIN FETCH u.permissoes WHERE u.nome = :nomeUsuario")
-	EntUsuario findByNomeFetchPermissoes(@Param("nomeUsuario") String nomeUsuario);
+	EntUsuario findByLogin(String login);
+
+	@Query("SELECT u FROM EntUsuario u JOIN FETCH u.permissoes WHERE u.login = :login")
+	EntUsuario findByLoginFetchPermissoes(@Param("login") String login);
 
 }

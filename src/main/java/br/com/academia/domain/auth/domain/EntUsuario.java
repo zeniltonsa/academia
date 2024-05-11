@@ -6,11 +6,17 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import br.com.academia.domain.auth.dto.RequestUsuario;
+import br.com.academia.domain.auth.dto.RequestUsuarioV2;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
@@ -28,13 +34,17 @@ public class EntUsuario implements Serializable {
 	@Column(name = "ID", length = 100, nullable = false)
 	private Long id;
 
-	@Column(name = "NOME", length = 50, nullable = false, unique = true)
+	@Column(name = "LOGIN", length = 50, nullable = false, unique = true)
+	private String login;
+
+	@Column(name = "NOME")
 	private String nome;
 
 	@Column(name = "SENHA", length = 200)
 	private String senha;
 
 	@ManyToMany
+	@JoinTable(name = "TB_USUARIO_PERMISSAO", joinColumns = @JoinColumn(name = "USUARIO_ID"), inverseJoinColumns = @JoinColumn(name = "PERMISSAO_ID"))
 	private List<EntPermissao> permissoes;
 
 	@Override
@@ -50,6 +60,14 @@ public class EntUsuario implements Serializable {
 		this.id = id;
 	}
 
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -58,6 +76,7 @@ public class EntUsuario implements Serializable {
 		this.nome = nome;
 	}
 
+	@JsonIgnore
 	public String getSenha() {
 		return senha;
 	}
@@ -76,9 +95,17 @@ public class EntUsuario implements Serializable {
 
 	public static EntUsuario from(RequestUsuario request) {
 		var usuario = new EntUsuario();
+		usuario.setLogin(request.getLogin());
 		usuario.setNome(request.getNome());
 		usuario.setSenha(request.getSenha());
-		usuario.setPermissoes(request.getPermissoes());
+
+		return usuario;
+	}
+
+	public static EntUsuario from(RequestUsuarioV2 request) {
+		var usuario = new EntUsuario();
+		usuario.setNome(request.getNome());
+		usuario.setSenha(request.getSenha());
 
 		return usuario;
 	}

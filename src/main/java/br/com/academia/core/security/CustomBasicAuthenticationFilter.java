@@ -10,8 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.academia.domain.auth.UsuarioRepository;
 import br.com.academia.domain.auth.domain.EntUsuario;
+import br.com.academia.domain.auth.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class CustomBasicAuthenticationFilter extends OncePerRequestFilter {
 			String username = credentials[0];
 			String password = credentials[1];
 
-			EntUsuario usuario = usuarioRepository.findByNomeFetchPermissoes(username);
+			EntUsuario usuario = usuarioRepository.findByLoginFetchPermissoes(username);
 
 			if (usuario == null) {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

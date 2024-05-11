@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.CannotCreateTransactionException;
 import org.springframework.transaction.TransactionException;
 import org.springframework.validation.BindException;
@@ -84,8 +85,8 @@ public class ErrorHandler {
 		log.warn("HandleHttpMessageNotReadableException: ", ex.getCause());
 
 		String errorMessage = "Valor informado é inválido.";
-		if (ex.getCause() instanceof InvalidFormatException) {
-			InvalidFormatException cause = (InvalidFormatException) ex.getCause();
+		if (ex.getCause() instanceof InvalidFormatException ifex) {
+			InvalidFormatException cause = (InvalidFormatException) ifex.getCause();
 			errorMessage = "Valor informado é inválido: '" + cause.getValue().toString() + "'.";
 		}
 
@@ -119,6 +120,12 @@ public class ErrorHandler {
 	public ResponseEntity<Object> handleInvalidDataAccessResourceUsage(Exception ex) {
 		log.warn("HandleInvalidDataAccessResourceUsage: ", ex.getCause());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(ERRO_CONSULTA.getDescricao()));
+	}
+
+	@ExceptionHandler({ AccessDeniedException.class })
+	public ResponseEntity<Object> handleAccessDeniedException(Exception ex) {
+		log.warn("handleAccessDeniedException: ", ex.getCause());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse("Acesso negado."));
 	}
 
 	@ExceptionHandler({ Exception.class })

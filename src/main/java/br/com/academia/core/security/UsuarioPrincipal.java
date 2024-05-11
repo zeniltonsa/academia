@@ -13,7 +13,7 @@ public class UsuarioPrincipal {
 	private List<SimpleGrantedAuthority> authorities;
 
 	public UsuarioPrincipal(EntUsuario usuario) {
-		this.username = usuario.getNome();
+		this.username = usuario.getLogin();
 		this.password = usuario.getSenha();
 
 		this.authorities = usuario.getPermissoes().stream()
