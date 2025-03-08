@@ -23,6 +23,6 @@ public class AcademiaApplication {
 	@Hidden
 	@GetMapping("/")
 	public void rootEntryPoint(HttpServletResponse response) throws IOException {
-		response.sendRedirect("actuator/health");
+		response.sendRedirect("/health");
 	}
 }

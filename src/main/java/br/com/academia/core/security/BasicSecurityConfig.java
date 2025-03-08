@@ -1,8 +1,8 @@
 package br.com.academia.core.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -17,13 +17,12 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@Profile("prod")
 public class BasicSecurityConfig {
 
-	@Autowired
-	private CustomBasicAuthenticationFilter customBasicAuthenticationFilter;
-	
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
+	SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc,
+			CustomBasicAuthenticationFilter customBasicAuthenticationFilter) throws Exception {
 		return http //
 				.authorizeHttpRequests(authorize -> {
 
@@ -32,7 +31,8 @@ public class BasicSecurityConfig {
 							mvc.pattern(HttpMethod.POST, "/v1/usuario"), //
 							mvc.pattern(HttpMethod.GET, "/v3/api-docs/**"), //
 							mvc.pattern(HttpMethod.GET, "/swagger-ui/**"), //
-							mvc.pattern(HttpMethod.GET, "/actuator/**") //
+							mvc.pattern(HttpMethod.GET, "/actuator/**"), //
+							mvc.pattern("/favicon.ico") //
 
 					).permitAll();
 
