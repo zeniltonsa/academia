@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "Financeiro", description = "Gerenciamento financeiro dos alunos")
+@Tag(name = "Financeiro", description = "Gerenciamento financeiro dos clientes")
 @RestController
 @RequestMapping("/v1/financeiro")
 public class FinanceiroController {
@@ -40,7 +40,7 @@ public class FinanceiroController {
 		return service.mensalidades();
 	}
 
-	@Operation(summary = "Cadastrar mensalidade", description = "Cadastra uma mensalidade de um aluno")
+	@Operation(summary = "Cadastrar mensalidade", description = "Cadastra uma mensalidade de um clientes")
 	@PreAuthorize("hasRole('MENSALIDADE_CADASTRAR')")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping
@@ -48,7 +48,7 @@ public class FinanceiroController {
 		service.salvar(request);
 	}
 
-	@Operation(summary = "Atualizar mensalidade", description = "Atualiza uma mensalidade de um aluno")
+	@Operation(summary = "Atualizar mensalidade", description = "Atualiza uma mensalidade de um clientes")
 	@PreAuthorize("hasRole('MENSALIDADE_ATUALIZAR')")
 	@ResponseStatus(code = HttpStatus.OK)
 	@PutMapping
@@ -56,7 +56,7 @@ public class FinanceiroController {
 		service.atualizar(request);
 	}
 
-	@Operation(summary = "Excluir mensalidade", description = "Exclui uma mensalidade de um aluno")
+	@Operation(summary = "Excluir mensalidade", description = "Exclui uma mensalidade de um clientes")
 	@PreAuthorize("hasRole('MENSALIDADE_DELETAR')")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@DeleteMapping(value = "{id}")

@@ -37,7 +37,7 @@ public class OpenAPIConfig {
 				.title("Academia API") //
 				.version("1.0") //
 				.contact(contact) //
-				.description("Esta API expõe endpoints to gerenciar uma academia.") //
+				.description("API para gestão de uma academia.") //
 				.license(mitLicense);
 
 		return new OpenAPI() //
